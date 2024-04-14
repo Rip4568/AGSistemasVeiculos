@@ -20,8 +20,9 @@ class ControleRegistro(models.Model):
     
     def save(self, *args, **kwargs):
         self.km_pecorrido = self.km_retorno + self.km_saida
-        return super().save(*args, **kwargs)
-        #super(ControleRegistro, self).save(*args, **kwargs)
+        self.veiculo.km_troca_oleo -=  self.km_pecorrido
+        self.veiculo.save()
+        super(ControleRegistro, self).save(*args, **kwargs)
     
     @property
     def created_at_region(self):
