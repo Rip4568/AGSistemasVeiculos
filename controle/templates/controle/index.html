@@ -1,0 +1,163 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<section class="min-h-screen p-5 container flex justify-center items-center flex-col mt-12">
+  <form action="#acionado" method="post" class="space-y-4">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success w-full">Novo Controle de Registro</button>
+  </form>
+</section>
+<div class="w-full max-w-4xl">
+  <div class="form-control">
+    <div class="input-group flex place-items-center">
+      <input type="date" placeholder="Pesquisar por data" class="input input-bordered" />
+      <button class="btn btn-square">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+      </button>
+      <label for="">Filtre pela data de Saida</label>
+    </div>
+  </div>
+  <div class="overflow-x-auto mt-5">
+    <table class="table w-full">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Veículo</th>
+          <th>Motorista</th>
+          <th>Data Saída</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for registro in registros %}
+        <tr>
+          <th>{{ forloop.counter }}</th>
+          <td>{{ registro.veiculo}}</td>
+          <td>{{ registro.motorista }}</td>
+          <td>{{ registro.saida|date:"d/m/Y H:i" }}</td>
+          <td>
+            <div class="btn-group">
+              <button 
+                class="btn btn-xs btn-info">
+                <img 
+                  src="https://www.svgrepo.com/show/513029/view-simple-815.svg" 
+                  onclick="view_modal_{{registro.pk}}.showModal()" 
+                  alt="Vizualizar" 
+                  class="icon">
+                </button>
+              <button 
+                class="btn btn-xs btn-warning">
+                <img 
+                  src="https://www.svgrepo.com/show/532995/pen-square.svg" 
+                  onclick="edit_modal_{{registro.pk}}.showModal()" 
+                  class="icon"  
+                  alt="editar">
+                </button>
+              <button 
+                class="btn btn-xs btn-error">
+                  <img 
+                    src="https://www.svgrepo.com/show/434383/garbage.svg" 
+                    onclick="delete_modal_{{registro.pk}}.showModal()" 
+                    alt="excluir" 
+                    class="icon">
+                </button>
+            </div>
+          </td>
+        </tr>
+        <dialog id="view_modal_{{ registro.pk }}" class="modal">
+          <div class="modal-box">
+            <h3 class="font-bold text-lg">Dados de {{ registro }}</h3>
+            <div class="py-4 space-y-2">
+              <p><strong>Veículo:</strong> {{ registro.veiculo}}</p>
+              <p><strong>Motorista:</strong> {{ registro.motorista.nome }}</p>
+              <p><strong>Data e Hora de Saída:</strong> {{ registro.saida|date:"d/m/Y H:i" }}</p>
+              <p><strong>Data e Hora de Retorno:</strong> {% if registro.retorno %}{{ registro.retorno|date:"d/m/Y H:i" }}{% else %}Ainda não retornou{% endif %}</p>
+              <p><strong>Quilometragem de Saída:</strong> {{ registro.km_saida }}</p>
+              <p><strong>Quilometragem de Retorno:</strong> {% if registro.km_retorno %}{{ registro.km_retorno }}{% else %}Ainda não registrado{% endif %}</p>
+              <p><strong>Quilometragem Percorrida:</strong> {% if registro.km_pecorrido %}{{ registro.km_pecorrido }}{% else %}Ainda não registrado{% endif %}</p>
+              <p><strong>Destino:</strong> {{ registro.destino }}</p>
+            </div>
+            <div class="modal-action">
+              <form method="dialog" name="asd" id="asd">
+                <button type="submit" class="btn">Fechar</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
+        <dialog id="delete_modal_{{registro.pk}}" class="modal">
+          <div class="modal-box">
+            <h3 class="font-bold text-lg">Deletar {{registro}} ?</h3>
+            <p class="py-4">Tem certeza que deseja deletar ?</p>
+            <div class="modal-action">
+              <form method="dialog" name="asd" id="asd">
+                <button type="submit" class="btn btn-success">Não</button>
+              </form>
+              <form action="{% url "controle:delete" registro.pk %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-error" type="submit">Sim!</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
+        <dialog id="edit_modal_{{ registro.pk }}" class="modal">
+          <div class="modal-box">
+            <h3 class="font-bold text-lg">Editar Registro</h3>
+            <form action="{% url 'controle:update' registro.pk %}" method="post" class="py-4 space-y-4">
+              {% csrf_token %}
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text">Veículo</span>
+                </label>
+                <select name="veiculo" class="select select-bordered w-full">
+                  {% for veiculo in veiculos %}
+                  <option value="{{ veiculo.id }}" {% if veiculo == registro.veiculo %}selected{% endif %}>
+                    {{ veiculo.marca }} - {{ veiculo.modelo }}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text">Motorista</span>
+                </label>
+                <select name="motorista" class="select select-bordered w-full">
+                  {% for motorista in motoristas %}
+                  <option value="{{ motorista.cod_motorista }}" {% if motorista == registro.motorista %}selected{% endif %}>
+                    {{ motorista.nome }}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text">Destino</span>
+                </label>
+                <input type="text" name="destino" value="{{ registro.destino }}" class="input input-bordered w-full" />
+              </div>
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text">Data e Hora de Saída</span>
+                </label>
+                <input type="datetime-local" name="saida" value="{{ registro.saida|date:'Y-m-d\TH:i' }}" class="input input-bordered w-full" />
+              </div>
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text">Quilometragem de Saída</span>
+                </label>
+                <input type="number" name="km_saida" value="{{ registro.km_saida }}" class="input input-bordered w-full" />
+              </div>
+              <div class="modal-action">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <button type="button" class="btn" onclick="edit_modal_{{ registro.pk }}.close()">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </dialog>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock content %}

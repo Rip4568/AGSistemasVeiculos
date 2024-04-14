@@ -1,0 +1,10 @@
+<dialog id="edit_modal_{{ registro.pk }}" class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Editar Registro</h3>
+    <form action="{% url 'controle:update' registro.pk %}" method="post" class="py-4 space-y-4">
+      {% csrf_token %}
+      {{form.as_p}}
+      <button class="btn btn-primary" type="submit">Atualizar</button>
+    </form>
+  </div>
+</dialog>

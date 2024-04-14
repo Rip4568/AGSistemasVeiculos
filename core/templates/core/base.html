@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="dracula">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css/daisyUI_4.10.css" %}" data-theme="light">
+    <title>{% block title %}{% endblock title %}</title>
+    {% block head %}{% endblock head %}
+    <style>
+      .icon {
+        width: 15px;
+      }
+    </style>
+</head>
+<body>
+    
+    <main id="root" class="flex">
+        <div class="drawer lg:drawer-open">
+            <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+            <div class="drawer-content flex flex-col items-center justify-center">
+              {% block content %}{% endblock content %}
+              <label for="my-drawer-2" class="btn btn-secondary drawer-button lg:hidden fixed top-4 left-4"><strong>>></strong></label>
+            
+            </div> 
+            <div class="drawer-side">
+              <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label> 
+              <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content gap-3 center">
+                <!-- Sidebar content here -->
+                <li><a class="btn btn-primary" href="{% url "controle:home" %}">Pagina Inicial </a></li>
+                <li><a class="btn btn-secondary btn-sm" href="{% url "carro:register_new_car" %}">Veiculos</a></li>
+                <li><a class="btn btn-secondary btn-sm" href="{% url "motorista:register_and_list_motorista" %}">Motoristas</a></li>
+                <label for="my-drawer-2" class="btn btn-error drawer-button md:hidden lg:hidden fixed bottom-4 left-4 strong"><strong><<</strong></label>
+              </ul>
+            </div>
+          </div>
+        {% comment %} {% include "core/layouts/sidebar.html" %} {% endcomment %}
+    </main>
+    {% include "core/layouts/footer.html" %}
+    {% block scripts %}{% endblock scripts %}
+    <script src="{% static "js/tailwind_3.4.js" %}"></script>
+</body>
+</html>

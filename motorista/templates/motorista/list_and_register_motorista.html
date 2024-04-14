@@ -1,0 +1,45 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<section class="min-h-screen p-5 container flex justify-center items-center flex-col mt-12">
+  <div class="w-full max-w-md">
+    <h1 class="text-3xl mb-4">Registre um novo Motorista!</h1>
+    <form action="{% url "motorista:register_and_list_motorista" %}" method="post" class="space-y-4">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-success w-full">Novo Motorista</button>
+    </form>
+  </div>
+  <div class="overflow-x-auto mt-5 w-full">
+    <table class="table w-full">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Cod. Motorista</th>
+          <th>Nome</th>
+          <th>Telefone</th>
+          <th>CNH</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for motorista in motoristas %}
+        <tr class="hover">
+          <th>{{ forloop.counter }}</th>
+          <td>{{ motorista.cod_motorista }}</td>
+          <td>{{ motorista.nome }}</td>
+          <td>{{ motorista.telefone }}</td>
+          <td>{{ motorista.cnh }}</td>
+          <td>
+            <div class="btn-group">
+              <button class="btn btn-xs btn-warning"><img src="https://www.svgrepo.com/show/532995/pen-square.svg" class="icon"  alt="editar"></button>
+              <button class="btn btn-xs btn-error"><img src="https://www.svgrepo.com/show/434383/garbage.svg" alt="excluir" class="icon"></button>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock content %}

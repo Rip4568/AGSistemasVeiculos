@@ -1,0 +1,51 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<section class="min-h-screen p-5 container flex justify-center items-center flex-col mt-12">
+  <div class="w-full max-w-md">
+    <h1 class="text-3xl mb-4">Registre um novo Carro!</h1>
+    <form action="{% url "carro:register_new_car" %}" method="post" class="space-y-4">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-success w-full">Novo Carro</button>
+    </form>
+  </div>
+  <div class="overflow-x-auto mt-5 w-full">
+    <table class="table w-full">
+      <thead>
+        <tr>
+          {% comment %} 
+          placa
+          marca
+          veiculo
+          km_troca_oleo
+           {% endcomment %}
+          <th>#</th>
+          <th>Placa</th>
+          <th>Marca</th>
+          <th>Veiculo</th>
+          <th>Km Restante antes da troca</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for veiculo in veiculos %}
+        <tr class="hover">
+          <th>{{ forloop.counter }}</th>
+          <td>{{ veiculo.placa }}</td>
+          <td>{{ veiculo.marca }}</td>
+          <td>{{ veiculo.veiculo }}</td>
+          <td>{{ veiculo.km_troca_oleo }}</td>
+          <td>
+            <div class="btn-group">
+              <button class="btn btn-xs btn-warning"><img src="https://www.svgrepo.com/show/532995/pen-square.svg" class="icon"  alt="editar"></button>
+              <button class="btn btn-xs btn-error"><img src="https://www.svgrepo.com/show/434383/garbage.svg" alt="excluir" class="icon"></button>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock content %}
