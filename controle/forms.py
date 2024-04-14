@@ -9,8 +9,8 @@ class ControleRegistroForm(forms.ModelForm):
             'veiculo': forms.Select(attrs={'class': 'input input-bordered w-full'}),
             'motorista': forms.Select(attrs={'class': 'input input-bordered w-full'}),
             'destino': forms.TextInput(attrs={'class': 'input input-bordered w-full'}),
-            'saida': forms.DateTimeInput(attrs={'class': 'input input-bordered w-full', 'type': 'datetime-local'}),
-            'retorno': forms.DateTimeInput(attrs={'class': 'input input-bordered w-full', 'type': 'datetime-local'}),
+            'saida': forms.DateTimeInput(attrs={'class': 'input input-bordered w-full', 'type': 'date'}),
+            'retorno': forms.DateTimeInput(attrs={'class': 'input input-bordered w-full', 'type': 'date'}),
             'km_saida': forms.TextInput(attrs={
                 'class': 'input input-bordered w-full', 
                 'type': 'number', 
