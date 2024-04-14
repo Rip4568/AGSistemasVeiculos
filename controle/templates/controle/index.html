@@ -1,5 +1,5 @@
 {% extends "core/base.html" %}
-
+{% load static %}
 {% block content %}
 <section class="min-h-screen p-5 container flex justify-center items-center flex-col mt-12">
   <form action="#acionado" method="post" class="space-y-4">
@@ -10,16 +10,17 @@
 </section>
 <div class="w-full max-w-4xl">
   <div class="form-control">
-    <div class="input-group flex place-items-center">
-      <input type="date" placeholder="Pesquisar por data" class="input input-bordered" />
-      <button class="btn btn-square">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+    <form id="filtrar-form" class="input-group flex place-items-center" method="POST">
+      {% csrf_token %}
+      <input type="datetime" placeholder="Pesquisar por data" name="filtrar-data-registro" class="input input-bordered" >
+      <button class="btn btn-square" type="submit">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
       </button>
       <label for="">Filtre pela data de Saida</label>
-    </div>
+  </form>
   </div>
   <div class="overflow-x-auto mt-5">
-    <table class="table w-full">
+    <table id="table-list-controle" class="table w-full">
       <thead>
         <tr>
           <th></th>
@@ -50,7 +51,7 @@
                 class="btn btn-xs btn-warning">
                 <img 
                   src="https://www.svgrepo.com/show/532995/pen-square.svg" 
-                  onclick="edit_modal_{{registro.pk}}.showModal()" 
+                  onclick="renderUpdateForm({{ registro.pk }})" 
                   class="icon"  
                   alt="editar">
                 </button>
@@ -100,64 +101,24 @@
             </div>
           </div>
         </dialog>
-        <dialog id="edit_modal_{{ registro.pk }}" class="modal">
-          <div class="modal-box">
-            <h3 class="font-bold text-lg">Editar Registro</h3>
-            <form action="{% url 'controle:update' registro.pk %}" method="post" class="py-4 space-y-4">
-              {% csrf_token %}
-              <div class="form-control">
-                <label class="label">
-                  <span class="label-text">Veículo</span>
-                </label>
-                <select name="veiculo" class="select select-bordered w-full">
-                  {% for veiculo in veiculos %}
-                  <option value="{{ veiculo.id }}" {% if veiculo == registro.veiculo %}selected{% endif %}>
-                    {{ veiculo.marca }} - {{ veiculo.modelo }}
-                  </option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div class="form-control">
-                <label class="label">
-                  <span class="label-text">Motorista</span>
-                </label>
-                <select name="motorista" class="select select-bordered w-full">
-                  {% for motorista in motoristas %}
-                  <option value="{{ motorista.cod_motorista }}" {% if motorista == registro.motorista %}selected{% endif %}>
-                    {{ motorista.nome }}
-                  </option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div class="form-control">
-                <label class="label">
-                  <span class="label-text">Destino</span>
-                </label>
-                <input type="text" name="destino" value="{{ registro.destino }}" class="input input-bordered w-full" />
-              </div>
-              <div class="form-control">
-                <label class="label">
-                  <span class="label-text">Data e Hora de Saída</span>
-                </label>
-                <input type="datetime-local" name="saida" value="{{ registro.saida|date:'Y-m-d\TH:i' }}" class="input input-bordered w-full" />
-              </div>
-              <div class="form-control">
-                <label class="label">
-                  <span class="label-text">Quilometragem de Saída</span>
-                </label>
-                <input type="number" name="km_saida" value="{{ registro.km_saida }}" class="input input-bordered w-full" />
-              </div>
-              <div class="modal-action">
-                <button type="submit" class="btn btn-primary">Salvar</button>
-                <button type="button" class="btn" onclick="edit_modal_{{ registro.pk }}.close()">Cancelar</button>
-              </div>
-            </form>
-          </div>
-        </dialog>
+        
         {% endfor %}
       </tbody>
     </table>
   </div>
 </div>
+{% comment %} EU DEVERIA COLOCAR TODOS OS DIALOGS AQUI EM BAIXO
+E DEIXAR QUE O JAVASCRIPT PEGUE E RENDERIZE O FORMULARIO..... POREM ..... {% endcomment %}
+<dialog id="edit_modal" class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Editar Registro</h3>
+    <div class="content-form"></div>
+  </div>
+</dialog>
 
 {% endblock content %}
+
+
+{% block scripts %}
+<script src="{% static "js/controle.js" %}" defer></script>
+{% endblock scripts %}
