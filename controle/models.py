@@ -6,8 +6,8 @@ from carro.models import Veiculo
 from motorista.models import Motorista
 
 class ControleRegistro(models.Model):
-    veiculo = models.ForeignKey(Veiculo, on_delete=models.CASCADE, blank=False, null=False, related_name='registros')
-    motorista = models.ForeignKey(Motorista, on_delete=models.CASCADE, blank=False, null=False, related_name='registros')
+    veiculo = models.ForeignKey(Veiculo, on_delete=models.DO_NOTHING, blank=False, null=False, related_name='registros')
+    motorista = models.ForeignKey(Motorista, on_delete=models.DO_NOTHING, blank=False, null=False, related_name='registros')
     destino = models.CharField('Destino', max_length=50, blank=False, null=False)
     saida = models.DateTimeField('Data e hora da Saida', blank=False, null=False)
     retorno = models.DateTimeField('Data e hora do Retorno', blank=True, null=True)
