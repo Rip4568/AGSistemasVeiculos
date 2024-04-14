@@ -32,11 +32,26 @@
           <td>{{ motorista.cnh }}</td>
           <td>
             <div class="btn-group">
-              <button class="btn btn-xs btn-warning"><img src="https://www.svgrepo.com/show/532995/pen-square.svg" class="icon"  alt="editar"></button>
-              <button class="btn btn-xs btn-error"><img src="https://www.svgrepo.com/show/434383/garbage.svg" alt="excluir" class="icon"></button>
+              <button class="btn btn-xs btn-warning"><img src="https://www.svgrepo.com/show/532995/pen-square.svg" class="icon" alt="editar"></button>
+              <button class="btn btn-xs btn-error" onclick="delete_modal_{{motorista.pk}}.showModal()"><img src="https://www.svgrepo.com/show/434383/garbage.svg" alt="excluir" class="icon"></button>
             </div>
           </td>
         </tr>
+        <dialog id="delete_modal_{{motorista.pk}}" class="modal">
+          <div class="modal-box">
+            <h3 class="font-bold text-lg">Deletar {{motorista}} ?</h3>
+            <p class="py-4">Tem certeza que deseja deletar ?</p>
+            <div class="modal-action">
+              <form method="dialog" name="asd" id="asd">
+                <button type="submit" class="btn btn-success">Não</button>
+              </form>
+              <form action="{% url "motorista:delete" motorista.pk %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-error" type="submit">Sim!</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
         {% endfor %}
       </tbody>
     </table>
