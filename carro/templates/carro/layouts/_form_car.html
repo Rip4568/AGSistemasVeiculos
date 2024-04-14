@@ -1,0 +1,6 @@
+<form action="{% url "carro:update_car" veiculo.pk %}" method="post" class="py-4 space-y-4">
+  {% csrf_token %}
+  {{form.as_p}}
+  <button type="submit" class="btn btn-primary">Atualizar|Salvar</button>
+  <button type="button" onclick="edit_modal.close()" class="btn btn-error">Fechar</button>
+</form>
