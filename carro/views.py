@@ -1,5 +1,5 @@
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from carro.forms import VeiculoForm
 from carro.models import Veiculo
@@ -16,3 +16,8 @@ def register_new_car(request:HttpRequest) -> HttpResponse:
         'veiculos': veiculos
     }
     return render(request, 'carro/register_car.html', context)
+
+def delete_car(request:HttpRequest, pk:int) -> HttpResponse:
+    veiculo = Veiculo.objects.get(pk=pk)
+    veiculo.delete()
+    return redirect('motorista:register_and_list_motorista')
