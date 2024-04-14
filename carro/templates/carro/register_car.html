@@ -1,5 +1,7 @@
 {% extends "core/base.html" %}
 
+{% load static %}
+
 {% block content %}
 <section class="min-h-screen p-5 container flex justify-center items-center flex-col mt-12">
   <div class="w-full max-w-md">
@@ -34,7 +36,7 @@
           </td>
           <td>
             <div class="btn-group">
-              <button class="btn btn-xs btn-warning"><img src="https://www.svgrepo.com/show/532995/pen-square.svg" class="icon"  alt="editar"></button>
+              <button class="btn btn-xs btn-warning" onclick="renderFormToUpdate({{ veiculo.pk }})"><img src="https://www.svgrepo.com/show/532995/pen-square.svg" class="icon"  alt="editar"></button>
               <button class="btn btn-xs btn-error" onclick="delete_modal_{{veiculo.pk}}.showModal()"><img src="https://www.svgrepo.com/show/434383/garbage.svg" alt="excluir" class="icon"></button>
             </div>
           </td>
@@ -59,4 +61,17 @@
     </table>
   </div>
 </section>
+
+<dialog id="edit_modal" class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Editar Registro</h3>
+    <div class="content-form"></div>
+  </div>
+</dialog>
 {% endblock content %}
+
+
+{% block scripts %}
+
+<script src="{% static "js/index.js" %}"></script>
+{% endblock scripts %}
