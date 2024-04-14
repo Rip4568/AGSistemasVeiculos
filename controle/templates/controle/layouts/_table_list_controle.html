@@ -1,0 +1,84 @@
+<table id="table-list-controle" class="table w-full">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Veículo</th>
+      <th>Motorista</th>
+      <th>Data Saída</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for registro in registros %}
+    <tr>
+      <th>{{ forloop.counter }}</th>
+      <td>{{ registro.veiculo}}</td>
+      <td>{{ registro.motorista }}</td>
+      <td>{{ registro.saida|date:"d/m/Y H:i" }}</td>
+      <td>
+        <div class="btn-group">
+          <button 
+            class="btn btn-xs btn-info">
+            <img 
+              src="https://www.svgrepo.com/show/513029/view-simple-815.svg" 
+              onclick="view_modal_{{registro.pk}}.showModal()" 
+              alt="Vizualizar" 
+              class="icon">
+            </button>
+          <button 
+            class="btn btn-xs btn-warning">
+            <img 
+              src="https://www.svgrepo.com/show/532995/pen-square.svg" 
+              onclick="renderUpdateForm({{ registro.pk }})" 
+              class="icon"  
+              alt="editar">
+            </button>
+          <button 
+            class="btn btn-xs btn-error">
+              <img 
+                src="https://www.svgrepo.com/show/434383/garbage.svg" 
+                onclick="delete_modal_{{registro.pk}}.showModal()" 
+                alt="excluir" 
+                class="icon">
+            </button>
+        </div>
+      </td>
+    </tr>
+    <dialog id="view_modal_{{ registro.pk }}" class="modal">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg">Dados de {{ registro }}</h3>
+        <div class="py-4 space-y-2">
+          <p><strong>Veículo:</strong> {{ registro.veiculo}}</p>
+          <p><strong>Motorista:</strong> {{ registro.motorista.nome }}</p>
+          <p><strong>Data e Hora de Saída:</strong> {{ registro.saida|date:"d/m/Y H:i" }}</p>
+          <p><strong>Data e Hora de Retorno:</strong> {% if registro.retorno %}{{ registro.retorno|date:"d/m/Y H:i" }}{% else %}Ainda não retornou{% endif %}</p>
+          <p><strong>Quilometragem de Saída:</strong> {{ registro.km_saida }}</p>
+          <p><strong>Quilometragem de Retorno:</strong> {% if registro.km_retorno %}{{ registro.km_retorno }}{% else %}Ainda não registrado{% endif %}</p>
+          <p><strong>Quilometragem Percorrida:</strong> {% if registro.km_pecorrido %}{{ registro.km_pecorrido }}{% else %}Ainda não registrado{% endif %}</p>
+          <p><strong>Destino:</strong> {{ registro.destino }}</p>
+        </div>
+        <div class="modal-action">
+          <form method="dialog" name="asd" id="asd">
+            <button type="submit" class="btn">Fechar</button>
+          </form>
+        </div>
+      </div>
+    </dialog>
+    <dialog id="delete_modal_{{registro.pk}}" class="modal">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg">Deletar {{registro}} ?</h3>
+        <p class="py-4">Tem certeza que deseja deletar ?</p>
+        <div class="modal-action">
+          <form method="dialog" name="asd" id="asd">
+            <button type="submit" class="btn btn-success">Não</button>
+          </form>
+          <form action="{% url "controle:delete" registro.pk %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-error" type="submit">Sim!</button>
+          </form>
+        </div>
+      </div>
+    </dialog>
+    {% endfor %}
+  </tbody>
+</table>
