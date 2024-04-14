@@ -14,12 +14,6 @@
     <table class="table w-full">
       <thead>
         <tr>
-          {% comment %} 
-          placa
-          marca
-          veiculo
-          km_troca_oleo
-           {% endcomment %}
           <th>#</th>
           <th>Placa</th>
           <th>Marca</th>
@@ -35,14 +29,31 @@
           <td>{{ veiculo.placa }}</td>
           <td>{{ veiculo.marca }}</td>
           <td>{{ veiculo.veiculo }}</td>
-          <td>{{ veiculo.km_troca_oleo }}</td>
+          <td>{{ veiculo.km_troca_oleo }}
+            {% if veiculo.km_troca_oleo <= 0 %} <button class="btn btn-error btn-sm">Trocar Oleo!</button> {% endif %}
+          </td>
           <td>
             <div class="btn-group">
               <button class="btn btn-xs btn-warning"><img src="https://www.svgrepo.com/show/532995/pen-square.svg" class="icon"  alt="editar"></button>
-              <button class="btn btn-xs btn-error"><img src="https://www.svgrepo.com/show/434383/garbage.svg" alt="excluir" class="icon"></button>
+              <button class="btn btn-xs btn-error" onclick="delete_modal_{{veiculo.pk}}.showModal()"><img src="https://www.svgrepo.com/show/434383/garbage.svg" alt="excluir" class="icon"></button>
             </div>
           </td>
         </tr>
+        <dialog id="delete_modal_{{veiculo.pk}}" class="modal">
+          <div class="modal-box">
+            <h3 class="font-bold text-lg">Deletar {{veiculo}} ?</h3>
+            <p class="py-4">Tem certeza que deseja deletar ?</p>
+            <div class="modal-action">
+              <form method="dialog" name="asd" id="asd">
+                <button type="submit" class="btn btn-success">Não</button>
+              </form>
+              <form action="{% url "carro:delete_car" veiculo.pk %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-error" type="submit">Sim!</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
         {% endfor %}
       </tbody>
     </table>
