@@ -70,3 +70,14 @@ Durante o processo de desenvolvimento apliquei alguns testes para testar meu rac
   python manage.py test
 ```
 
+
+## Melhorias
+
+O que pode melhorar no projeto?
+
+- Responsividade, telas muito estreitas os elementos acabam ficando sobrepostos
+- Mascara. adicionar mascaras no inputs para auxiliar o usuario para preencher corretamente todos os campos e evitar erros
+- Autenticação. no momento o projeto se encotnra bem inseguro por não ter nenhum tipo de validação ou regra para determinar que tipo de usuario vai poder usar ou qual campo vai poder modificar.
+- Paginação. no momento todos os registros estão sendo mostrados de uma unica vez, isso pode resultar em sobrecarga nos dispositivos que estiverem vizualizando.
+- Single Page Aplication. O django Template é otimo, porem para cada alternancia de pagina esta sendo renderizado a pagina inteira de uma vez, uma abordagem melhor seria renderizar somente o conteudo e identificar quais são os elementos que se repetem para não incluir na renderização
+
