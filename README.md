@@ -2,7 +2,7 @@
 # AGSistemas Veiculos
 
 E é com grande prazer que anuncio mais um desafio feito para a empresa AGSistema como desafio!
-A ideia principal é fazer uma gestão de carros e motoristas tendo total controle sobre edição, deletação e criação. Existe alguns pontos que faltou porem como o projeto em si esta feito. O motivo pelo qual não ter terminado. Todas as funcionalidades, como a edição e a exclusão de motorista e veículo é pq isso demandaria mais tempo para ser feito. Coisa que eu não gosto de fazer quando se trata de um projeto de apenas desafio.
+A ideia principal é fazer uma gestão de carros e motoristas tendo total controle sobre edição, deletação e criação. Existe alguns pontos que faltou porem como o projeto em si esta feito. O motivo pelo qual não ter terminado. Todas as funcionalidades, como a edição e a exclusão de motorista e veículo é pq isso demandaria mais tempo para ser feito. Coisa que eu não gosto de fazer quando se trata de um projeto de apenas desafio. Caso queira ver o digrama e todas as deciões que tomei na construção de cada campo junto com seus relacionamentos, basta clicar no link: [AGSitemasDiagrama](https://dbdiagram.io/d/AGSistemasVeiculos-661a8ef903593b6b61e7fa7e)
 
 
 ## Rodando localmente
