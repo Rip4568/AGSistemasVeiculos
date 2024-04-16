@@ -46,3 +46,12 @@ def render_form_update_car(request:HttpRequest, pk:int) -> HttpResponse:
     return HttpResponse(
         loader.render_to_string('carro/layouts/_form_car.html', context, request=request)
     )
+    
+def render_form_delete_car(request:HttpRequest, pk:int) -> HttpResponse:
+    veiculo = Veiculo.objects.get(pk=pk)
+    context = {
+        'veiculo': veiculo
+    }
+    return HttpResponse(
+        loader.render_to_string('carro/layouts/_content_delete_modal.html', context, request=request)
+    )
