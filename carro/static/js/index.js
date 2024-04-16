@@ -13,3 +13,11 @@ async function renderFormToUpdate(veiculoId) {
   const response = await fetch(`/render_form_update_car/${veiculoId}/`);
   modal.querySelector('.content-form').innerHTML = await response.text();
 }
+
+async function renderModalToDelete(veiculoId) {
+  const modal = document.getElementById(`delete_modal`);
+  modal.show()
+  modal.querySelector('.content-form').innerHTML = 'Carregando...'
+  const response = await fetch(`/render_form_delete_car/${veiculoId}/`);
+  modal.querySelector('.content-form').innerHTML = await response.text();
+}
