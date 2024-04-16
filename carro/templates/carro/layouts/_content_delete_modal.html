@@ -1,0 +1,10 @@
+<div class="modal-action">
+  <div>Veiculo: {{ veiculo }}</div>
+  <form method="dialog" name="asd" id="asd">
+    <button type="submit" class="btn btn-success">Não</button>
+  </form>
+  <form action="{% url "carro:delete_car" veiculo.pk %}" method="post">
+    {% csrf_token %}
+    <button class="btn btn-error" type="submit">Sim!</button>
+  </form>
+</div>
